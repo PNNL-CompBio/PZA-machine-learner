@@ -66,7 +66,7 @@ plot(data$solvent2,data$meta.ddG,main="Free energy change vs Solvent Accessibili
 
 plot(data$solvent2,data$DELTA_hydro,main="Hydrophobic change vs Solvent Accessibility",col=data$color,pch=data$point,xlab="Core -------------> Surface",ylab="More hydrophobic ----------> More polar")
 
-plot(data$Solvent,data$MAPP,main="MAPP vs Solvent Accessibility",col=data$color,pch=data$point,xlab="Core -------------> Surface",ylab="MAPP Score")
+plot(data$solvent2,data$MAPP,main="MAPP vs Solvent Accessibility",col=data$color,pch=data$point,xlab="Core -------------> Surface",ylab="MAPP Score")
 
 plot(data$DELTA_vol,data$solvent2,col=data$color,pch=data$point,xlab="Absolute change in volume",ylab="Solvent Access")
 
