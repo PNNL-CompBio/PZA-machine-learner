@@ -23,6 +23,7 @@ registerDoMC(cores=6)
 data <- read.csv(file = 'pncA_features', header = TRUE)
 data$color <- 'red'
 data[data$Phenotype=='R','color'] = 'blue'
+data$point <- 16
 
 #The following code was used to generate supplementary figure 1
 ggplot(data, aes(x=Phenotype, y=MAPP, fill=color)) + geom_violin() + geom_jitter(shape=16, position=position_jitter(0.2)) + theme_classic()
