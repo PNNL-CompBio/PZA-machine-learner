@@ -5,7 +5,7 @@
 
 list.of.packages <- c("RColorBrewer", "pROC", "scatterplot3d", "ggplot2", "rgl", "caret", "doMC")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
+if(length(new.packages)) install.packages(new.packages,repos = "https://www.stats.bris.ac.uk/R/")
 
 library(RColorBrewer)
 library(pROC)
