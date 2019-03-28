@@ -20,7 +20,7 @@ registerDoMC(cores=6)
 #/////////////////////////// Loading and interrogating the data ////////////////////////////////////////////
 
 #Read in data file, please modify file to point to a .csv of supplementary table X.
-data <- read.csv(file = '/Users/joshuacarter/Desktop/pncA_model_input.csv', header = TRUE)
+data <- read.csv(file = 'pncA_features', header = TRUE)
 data$color <- 'red'
 data[data$Phenotype=='R','color'] = 'blue'
 
