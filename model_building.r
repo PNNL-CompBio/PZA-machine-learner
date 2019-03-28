@@ -3,7 +3,7 @@
 # The script makes use of multiple cores to speed up model training. Please modify the code on line 14 to
 # reflect the number of cores on your machine.
 
-list.of.packages <- c("RColorBrewer", "pROC", "scatterplot3d", "ggplot2", "rgl", "caret", "doMC","arm","kernlab")
+list.of.packages <- c("RColorBrewer", "pROC", "scatterplot3d", "ggplot2", "rgl", "caret", "doMC","arm","kernlab","RSNNS")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages,repos = "https://www.stats.bris.ac.uk/R/")
 
@@ -15,6 +15,7 @@ library(ggplot2)
 library(caret)
 library(arm)
 library(kernlab)
+library(RSNNS)
 library(doMC)
 registerDoMC(cores=6)
 
