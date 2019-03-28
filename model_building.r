@@ -28,7 +28,7 @@ data[data$Phenotype=='R','color'] = 'blue'
 ggplot(data, aes(x=Phenotype, y=MAPP, fill=color)) + geom_violin() + geom_jitter(shape=16, position=position_jitter(0.2)) + theme_classic()
 wilcox.test(data$MAPP~data$Phenotype)
 
-ggplot(data, aes(x=Phenotype, y=Distance, fill=color)) + geom_violin() + geom_jitter(shape=16, position=position_jitter(0.2)) + theme_classic()
+ggplot(data, aes(x=Phenotype, y=Distance_active, fill=color)) + geom_violin() + geom_jitter(shape=16, position=position_jitter(0.2)) + theme_classic()
 wilcox.test(data$Distance_active~data$Phenotype)
 
 ggplot(data, aes(x=Phenotype, y=rogov, fill=color)) + geom_violin() + geom_jitter(shape=16, position=position_jitter(0.2)) + theme_classic()
