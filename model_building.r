@@ -3,6 +3,8 @@
 # The script makes use of multiple cores to speed up model training. If you have a Unix operating system, please modify
 # the code on line 20 (registerDoMC) to reflect the number of cores on your machine. If on Windows, you wille need to
 # to install the R package doParallel and snow and run the following code to register a local cluster on your machine.
+# Replace lines 28 and 29 (library(doMC) and registerdoMC(cores=6)) with the below code to allow for parallel training
+# on Windows OS.
 #
 # library(doParallel)
 # library(snow)
@@ -21,12 +23,12 @@ library(pROC)
 library(scatterplot3d)
 library(rgl)
 library(ggplot2)
-library(caret)
 library(arm)
 library(kernlab)
 library(RSNNS)
 library(doMC)
 registerDoMC(cores=6)
+library(caret)
 
 
 #/////////////////////////// Loading and interrogating the data ////////////////////////////////////////////
