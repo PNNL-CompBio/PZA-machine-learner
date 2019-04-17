@@ -1,7 +1,16 @@
-#This script fits machine learning models to an array containing structural features (continuous and factors)
+# This script fits machine learning models to an array containing structural features (continuous and factors)
 # to model the probability of resistance/susceptibility for a particular missense mutation in pncA
-# The script makes use of multiple cores to speed up model training. Please modify the code on line 14 to
-# reflect the number of cores on your machine.
+# The script makes use of multiple cores to speed up model training. If you have a Unix operating system, please modify
+# the code on line 20 (registerDoMC) to reflect the number of cores on your machine. If on Windows, you wille need to
+# to install the R package doParallel and snow and run the following code to register a local cluster on your machine.
+#
+# library(doParallel)
+# library(snow)
+# workers=makeCluster(4,type="SOCK")
+# registerDoParallel(workers)
+#
+# This script requires several packages that contain the code used to train the machine learning models,
+# so it will install several packages if they are not already present.
 
 list.of.packages <- c("RColorBrewer", "pROC", "scatterplot3d", "ggplot2", "rgl", "caret", "doMC","arm","kernlab","RSNNS")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
