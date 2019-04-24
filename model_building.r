@@ -12,7 +12,7 @@
 # This script requires several packages that contain the code used to train the machine learning models,
 # so it will install several packages if they are not already present. Please find the list of packages below.
 
-list.of.packages <- c("RColorBrewer", "pROC", "scatterplot3d", "ggplot2", "rgl", "caret", "doMC","arm","kernlab","RSNNS","e1071")
+list.of.packages <- c("RColorBrewer", "pROC", "scatterplot3d", "ggplot2", "rgl", "caret", "doMC","arm","kernlab","RSNNS","e1071","glmnet")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages,repos = "https://www.stats.bris.ac.uk/R/")
 
@@ -23,6 +23,8 @@ library(rgl)
 library(ggplot2)
 library(arm)
 library(kernlab)
+library(e1071)
+library(glmnet)
 library(RSNNS)
 library(doMC)
 registerDoMC(cores=6)
