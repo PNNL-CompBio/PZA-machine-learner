@@ -11,6 +11,9 @@
 #
 # This script requires several packages that contain the code used to train the machine learning models,
 # so it will install several packages if they are not already present. Please find the list of packages below.
+#
+# To begin, set your working directory to whereever you have stored the repo using the below command
+setwd("YOUR_PATH_HERE")
 
 list.of.packages <- c("RColorBrewer", "pROC", "scatterplot3d", "ggplot2", "rgl", "caret", "doMC","arm","kernlab","RSNNS","e1071","glmnet")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
