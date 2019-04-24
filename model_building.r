@@ -1,10 +1,8 @@
 # This script fits machine learning models to an array containing structural features (continuous and factors)
 # to model the probability of resistance/susceptibility for a particular missense mutation in pncA
 # The script makes use of multiple cores to speed up model training. If you have a Unix operating system, please modify
-# the code on line 20 (registerDoMC) to reflect the number of cores on your machine. If on Windows, you wille need to
+# the code on line 30 (registerDoMC) to reflect the number of cores you want to utilize. If on Windows, you will need to
 # to install the R package doParallel and snow and run the following code to register a local cluster on your machine.
-# Replace lines 28 and 29 (library(doMC) and registerdoMC(cores=6)) with the below code to allow for parallel training
-# on Windows OS.
 #
 # library(doParallel)
 # library(snow)
@@ -12,7 +10,7 @@
 # registerDoParallel(workers)
 #
 # This script requires several packages that contain the code used to train the machine learning models,
-# so it will install several packages if they are not already present.
+# so it will install several packages if they are not already present. Please find the list of packages below.
 
 list.of.packages <- c("RColorBrewer", "pROC", "scatterplot3d", "ggplot2", "rgl", "caret", "doMC","arm","kernlab","RSNNS")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -26,6 +24,8 @@ library(ggplot2)
 library(arm)
 library(kernlab)
 library(RSNNS)
+library(keras)
+library(tensorflow)
 library(doMC)
 registerDoMC(cores=6)
 library(caret)
@@ -115,8 +115,8 @@ data$abs_vol <- as.numeric(data$abs_vol)
 data$Distance_active <- as.numeric(data$Distance_active)
 data$Phenotype <- as.factor(data$Phenotype)
 
-#Remove absolute hydropathy change and absolute volume change
-clean_data <- data[,c(1,2,3,4,6,8,9,10,11,12,13,14,15,16,17)]
+#Remove color and point type columns
+clean_data <- data[,c(1:17)]
 
 #Set a seed for repeatability and split dataset into 70/30 training/testing sets.
 set.seed(1234)
@@ -217,10 +217,10 @@ svm_test_combine$svm_test_filtered_calls <- factor(svm_test_combine$svm_test_fil
 
 
 ################### Neural Network Model #########################################
-#Train neural network models with and without weight decay
+#Train neural network models (multi-layer perceptron, average mlp with weight decay)
 set.seed(1234)
-nn_tc <- trainControl(method="repeatedcv", number=10, repeats=10, search='random', classProbs = TRUE, savePredictions="final", summaryFunction = twoClassSummary, allowParallel = TRUE)
-nn_fit <- train(Phenotype ~ ., data=trainTransformed, method = 'mlpWeightDecay', trControl = nn_tc, tuneLength = 200, metric = 'ROC', weights = training_weights)
+nn_tc <- trainControl(method="repeatedcv", number=10, repeats=10, search='random', classProbs = TRUE, savePredictions="final", summaryFunction = twoClassSummary) #, allowParallel = TRUE
+nn_fit <- train(Phenotype ~ ., data=trainTransformed, method = 'mlp', trControl = nn_tc, tuneLength = 200, metric = 'ROC', weights = training_weights)
 nn2_fit <- train(Phenotype ~ ., data=trainTransformed, method = 'avNNet', trControl = nn_tc, tuneLength = 200, metric = 'ROC', weights = training_weights)
 
 #Generate predictions for test sets
@@ -281,6 +281,12 @@ confusionMatrix(data=as.factor(glm_calls), reference=as.factor(glm_truth), dnn=c
 confusionMatrix(data=as.factor(svm_calls), reference=as.factor(svm_truth), dnn=c('Predicted','Truth'), positive="1")
 #NN
 confusionMatrix(data=as.factor(nn_calls), reference=as.factor(nn_truth), dnn=c('Predicted','Truth'), positive="1")
+
+######## Models produced in publication ############
+#if you are computationally limited, you can load the models used in the paper here
+glm_fit <- readRDS('final_glm_mut.rds')
+svm_radial <- readRDS('final_svm_mut.rds')
+nn_fit <- readRDS('final_nn_mut.rds')
 
 #Plot model prediction histograms (Figure S2)
 tmp <- training
@@ -376,4 +382,5 @@ plot(diffs$diffs,diffs$destab)
 for(i in 2:17)
 {univar_reg <- glm(Phenotype ~ data[,i], family=binomial(), data=clean_data)
 roc <- roc(univar_reg$y ~ univar_reg$fitted.values, percent=TRUE)
+print(names(data)[i])
 print(roc$auc)}
